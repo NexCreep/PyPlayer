@@ -47,9 +47,10 @@ class Window:
         #minus_imageF = minus_image.subsample(40, 40)
         #minus_buttom = Button(root, text='Bajar', command=volume_down, image = minus_imageF)
         #minus_buttom.place(relx = 0.4, rely = 0.3, anchor = CENTER)
-
-        self.browse_buttom = Button(self.root, text='...', command=self.browser_file)
-        self.browse_buttom.place(relx = 0.75, rely = 0.8, anchor = CENTER)
+        self.browse_bt_img = PhotoImage(file='./img/browser.png')
+        self.browse_bt_imgF = self.browse_bt_img.subsample(50, 50)
+        self.browse_buttom = Button(self.root, text='...', image = self.browse_bt_imgF, command=self.browser_file)
+        self.browse_buttom.place(relx = 0.93, rely = 0.3, anchor = W)
 
         self.loop_image = PhotoImage(file='./img/loop.png')
         self.loop_imageF = self.loop_image.subsample(20, 20)
@@ -60,12 +61,12 @@ class Window:
 
         Label(self.root, textvariable=self.loopStr,font=('Dubai', 15)).place(relx = 0.8, rely = 0.9, anchor = CENTER)
 
-        browse_label = Label(self.root, textvariable=self.filename)
-        browse_label.place(relx = 0.7, rely = 0.8, anchor = E)
+        self.browse_label = Label(self.root, textvariable=self.filename, font=('Dubai', 20, 'bold'))
+        self.browse_label.place(relx = 0.925, rely = 0.3, anchor = E)
 
         self.logo_image = PhotoImage(file=icon)
         self.logo_label = Label(self.root, image = self.logo_image)
-        self.logo_label.place(relx = 0.3, rely = 0.4, anchor = CENTER)
+        self.logo_label.place(relx = 0.25, rely = 0.4, anchor = CENTER)
 
         self.state_tag = Label(self.root, text='', font=('Dubai', 25, 'bold') )
 
@@ -130,7 +131,15 @@ class Window:
         self.total_timeStr = str(total_time)
         self.total_time.set(total_timeVar)
 
-        self.filename.set(filenameStr)        
+        self.filename.set(filenameStr)
+        characters = int(len(filenameStr))
+        if characters <= 10:
+            self.browse_label.config(font=('Dubai', 25, 'bold'))
+        elif  28 > characters > 10 :
+            self.browse_label.config(font=('Dubai', 15, 'bold'))
+        elif characters >= 28:
+            self.browse_label.config(font=('Dubai', 11, 'bold'))
+        
         self.root.update()
         self.player = module.player(filename_path)
         
