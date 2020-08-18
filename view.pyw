@@ -1,3 +1,4 @@
+import os
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import filedialog
@@ -15,6 +16,7 @@ class Window:
         self.ctrl = control.Control()
         self.loopStr = StringVar(self.root, 'Bucle OFF')
         self.loopVar = '0'
+        self.filename = StringVar(self.root,'Seleccione un archivo')
 
         self.root.geometry('800x512')
         self.root.resizable(width=0, height=0)
@@ -57,6 +59,9 @@ class Window:
         Label(self.root, textvariable=self.total_time, font=('Dubai', 25, 'bold')).place(relx = 0.85, rely = 0.4, anchor = CENTER)
 
         Label(self.root, textvariable=self.loopStr,font=('Dubai', 15)).place(relx = 0.8, rely = 0.9, anchor = CENTER)
+
+        browse_label = Label(self.root, textvariable=self.filename)
+        browse_label.place(relx = 0.7, rely = 0.8, anchor = E)
 
         self.logo_image = PhotoImage(file=icon)
         self.logo_label = Label(self.root, image = self.logo_image)
@@ -107,15 +112,16 @@ class Window:
     
     def browser_file(self):
 
-        filename = filedialog.askopenfilename(initialdir = '/', title = 'Selecciona un archivo...', filetype =
+        filename_path = filedialog.askopenfilename(initialdir = '/', title = 'Selecciona un archivo...', filetype =
         (('Audio File', '*.wav *.mp3'),('all files','*.*')) )
 
-        if not filename:
+        if not filename_path:
             self.current_time.set('--:--')
             self.total_time.set('/ --:--')
             return
-    
-        audio_file = mutagen.File(filename)
+
+        filenameStr = os.path.basename(filename_path)
+        audio_file = mutagen.File(filename_path)
         self.audio_len = audio_file.info.length
         tm, ts = divmod(self.audio_len, 60)
         tm, ts = int(tm), int(ts)
@@ -124,10 +130,9 @@ class Window:
         self.total_timeStr = str(total_time)
         self.total_time.set(total_timeVar)
 
-        browse_label = Label(self.root, text=filename)
-        browse_label.place(relx = 0.4, rely = 0.8, anchor = CENTER)
+        self.filename.set(filenameStr)        
         self.root.update()
-        self.player = module.player(filename)
+        self.player = module.player(filename_path)
         
     def change_state(self,text_state : str, size : int):
         state_tag = Label(self.root, text=text_state, font=('Dubai', size, 'bold') )
