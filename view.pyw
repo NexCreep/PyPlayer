@@ -11,7 +11,7 @@ class Window:
         self.root = Tk()
 
         icon = './img/icon.png'
-        self.total_time = StringVar(self.root, '/--:--')
+        self.total_time = StringVar(self.root, '/ --:--')
         self.current_time = StringVar(self.root, '--:--')
         self.ctrl = control.Control()
         self.loopStr = StringVar(self.root, 'Bucle OFF')
@@ -135,9 +135,9 @@ class Window:
         characters = int(len(filenameStr))
         if characters <= 10:
             self.browse_label.config(font=('Dubai', 25, 'bold'))
-        elif  28 > characters > 10 :
+        elif  34 > characters > 10 :
             self.browse_label.config(font=('Dubai', 15, 'bold'))
-        elif characters >= 28:
+        elif characters >= 34:
             self.browse_label.config(font=('Dubai', 11, 'bold'))
         
         self.root.update()
